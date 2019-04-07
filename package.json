@@ -5,11 +5,12 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "./node_modules/.bin/webpack",
-    "dev": "./node_modules/.bin/webpack --config webpack.dev.js --watch",
-    "preversion": "npm run build",
-    "postversion": "git push && git push --tags"
+    "test": "npx jest",
+    "build": "npx webpack",
+    "dev": "npx webpack --config webpack.dev.js --watch",
+    "preversion": "npm run build && npm t",
+    "postversion": "git push && git push --tags",
+    "prepare": "npm run build && npm t"
   },
   "files": [
     "lib/**/*"
