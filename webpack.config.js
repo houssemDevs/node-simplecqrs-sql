@@ -25,8 +25,12 @@ module.exports = () => ({
       },
     ],
   },
+  devtools: 'source-map',
   externals: [nodeExternals()],
   resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
     extensions: ['.ts', '.js'],
   },
   plugins: [new cleanWebpackPlugin()],
