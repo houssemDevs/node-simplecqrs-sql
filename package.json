@@ -6,8 +6,11 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "test": "npx jest",
+    "cov": "npx jest --coverage",
+    "prebuild": "npm run clean",
     "build": "npx tsc",
     "dev": "npx tsc --watch",
+    "clean": "npx rimraf ./lib",
     "preversion": "npm run build && npm t",
     "postversion": "git push && git push --tags"
   },
@@ -19,16 +22,13 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^24.0.11",
-    "@types/webpack": "^4.4.27",
-    "clean-webpack-plugin": "^2.0.1",
     "jest": "^24.7.1",
+    "rimraf": "^2.6.3",
     "ts-jest": "^24.0.1",
     "ts-loader": "^5.3.3",
+    "ts-watch": "^1.0.8",
     "tslint": "^5.15.0",
-    "typescript": "^3.4.1",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0",
-    "webpack-node-externals": "^1.7.2"
+    "typescript": "^3.4.1"
   },
   "directories": {
     "lib": "lib"
