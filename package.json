@@ -1,6 +1,6 @@
 {
   "name": "bp",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "nodejs package using typescript",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
