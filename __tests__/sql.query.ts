@@ -34,7 +34,7 @@ describe('SqlSelectQuery', () => {
 
       query.addSortCriteria(SqlOrderByCriteria.desc('code'));
 
-      expect(query.toExpression()).toMatch(/^select code from users  ORDER BY code ASC,code DESC ;$/);
+      expect(query.toExpression()).toMatch(/^select code from users  ORDER BY code ASC,code DESC;$/);
     });
   });
 });
