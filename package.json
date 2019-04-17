@@ -1,7 +1,7 @@
 {
-  "name": "bp",
-  "version": "0.0.4",
-  "description": "nodejs package using typescript",
+  "name": "node-simplecqrs-sql",
+  "version": "0.1.0",
+  "description": "node-simplecqrs implementation for sql",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -47,10 +47,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/houssemdevs/bpnodepkg.git"
+    "url": "git+https://github.com/houssemdevs/node-simplecqrs-sql.git"
   },
   "bugs": {
-    "url": "https://github.com/houssemdevs/bpnodepkg/issues"
+    "url": "https://github.com/houssemdevs/node-simplecqrs-sql/issues"
   },
-  "homepage": "https://github.com/houssemdevs/bpnodepkg#readme"
+  "homepage": "https://github.com/houssemdevs/node-simplecqrs-sql#readme"
 }
