@@ -13,8 +13,10 @@
     "clean": "npx rimraf ./lib",
     "format": "npx prettier-tslint fix ./src/**/*.ts",
     "preversion": "npm run build && npm t",
-    "postversion": "git push && git push --tags",
-    "lint": "npx tslint -p tsconfig.json"
+    "postversion": "npm run push",
+    "lint": "npx tslint -p tsconfig.json",
+    "prepush": "npm run format",
+    "push": "git push && git push --tags"
   },
   "files": [
     "lib/**/*"
