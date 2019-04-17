@@ -15,7 +15,7 @@
     "preversion": "npm run build && npm t",
     "postversion": "npm run push",
     "lint": "npx tslint -p tsconfig.json",
-    "prepush": "npm run format",
+    "prepush": "npm run format && git add *",
     "push": "git push && git push --tags"
   },
   "files": [
