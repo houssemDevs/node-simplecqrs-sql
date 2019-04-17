@@ -16,7 +16,7 @@
     "postversion": "npm run push",
     "lint": "npx tslint -p tsconfig.json",
     "push": "git push && git push --tags",
-    "commit": "commit-wizard"
+    "add": "git add *"
   },
   "files": [
     "lib/**/*"
@@ -58,6 +58,7 @@
   "pre-commit": [
     "test",
     "lint",
-    "format"
+    "format",
+    "add"
   ]
 }

@@ -32,9 +32,13 @@ export class SqlUpdateCommand implements ISqlUpdateCommand {
   }
 
   public toExpression(): string {
-    const columnsClause = `SET ${this.columns.map(c => `${c.field} = ${c.value}`).join(',')}`;
+    const columnsClause = `SET ${this.columns
+      .map(c => `${c.field} = ${c.value}`)
+      .join(',')}`;
 
-    const whereClause = `WHERE (${this.filterGroup.map(f => f.toExpression()).join(' AND ')})`;
+    const whereClause = `WHERE (${this.filterGroup
+      .map(f => f.toExpression())
+      .join(' AND ')})`;
 
     const sqlQuery = `${this.expression} ${columnsClause} ${whereClause};`;
 
