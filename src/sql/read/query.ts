@@ -9,32 +9,38 @@ export class SqlSelectQuery implements ISqlSelectQuery {
   public static fromSelectStatment(statment: string): SqlSelectQuery {
     return new SqlSelectQuery(statment);
   }
+
   public static fromTableAndColumns(
     table: string,
     columns: string[],
   ): SqlSelectQuery {
     return new SqlSelectQuery(`SELECT ${columns.join(',')} FROM ${table}`);
   }
+
   private fitlerGroups: ISqlWhereCriteria[][];
   private currentFiltersGroup: ISqlWhereCriteria[];
   private sortGroup: ISqlOrderByCriteria[];
+
   protected constructor(private root: string) {
     this.fitlerGroups = [];
     this.sortGroup = [];
     this.currentFiltersGroup = [];
   }
+
   public addFilterCriteria(
     c: ISqlWhereCriteria,
   ): IQuery<string, ISqlWhereCriteria, ISqlOrderByCriteria> {
     this.currentFiltersGroup.push(c);
     return this;
   }
+
   public addSortCriteria(
     c: ISqlOrderByCriteria,
   ): IQuery<string, ISqlWhereCriteria, ISqlOrderByCriteria> {
     this.sortGroup.push(c);
     return this;
   }
+
   public beginNewFilterGroup(): IQuery<
     string,
     ISqlWhereCriteria,
@@ -46,6 +52,7 @@ export class SqlSelectQuery implements ISqlSelectQuery {
     }
     return this;
   }
+
   public toExpression(): string {
     let whereClause: string = '';
     let orderByClause: string = '';

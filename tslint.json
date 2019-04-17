@@ -17,7 +17,8 @@
     "prefer-template": true,
     "align": [true, "parameters", "statements", "elements"],
     "arrow-parens": [true, "ban-single-arg-parens"],
-    "whitespace": true
+    "whitespace": true,
+    "interface-name": false
   },
   "rulesDirectory": []
 }

@@ -39,7 +39,11 @@
     "lib": "lib"
   },
   "dependencies": {
-    "node-simplecqrs": "^0.3.4"
+    "@types/generic-pool": "^3.1.9",
+    "@types/tedious": "^3.0.0",
+    "generic-pool": "^3.7.1",
+    "node-simplecqrs": "^0.3.4",
+    "tedious": "^6.1.1"
   },
   "repository": {
     "type": "git",
