@@ -2,14 +2,18 @@ import { IQuery } from 'node-simplecqrs';
 
 import { ISqlOrderByCriteria, ISqlWhereCriteria } from './criteria';
 
-export interface ISqlSelectQuery extends IQuery<string, ISqlWhereCriteria, ISqlOrderByCriteria> {}
+export interface ISqlSelectQuery
+  extends IQuery<string, ISqlWhereCriteria, ISqlOrderByCriteria> {}
 
 export class SqlSelectQuery implements ISqlSelectQuery {
   public static fromSelectStatment(statment: string): SqlSelectQuery {
     return new SqlSelectQuery(statment);
   }
 
-  public static fromTableAndColumns(table: string, columns: string[]): SqlSelectQuery {
+  public static fromTableAndColumns(
+    table: string,
+    columns: string[],
+  ): SqlSelectQuery {
     return new SqlSelectQuery(`SELECT ${columns.join(',')} FROM ${table}`);
   }
 
@@ -23,17 +27,25 @@ export class SqlSelectQuery implements ISqlSelectQuery {
     this.currentFiltersGroup = [];
   }
 
-  public addFilterCriteria(c: ISqlWhereCriteria): IQuery<string, ISqlWhereCriteria, ISqlOrderByCriteria> {
+  public addFilterCriteria(
+    c: ISqlWhereCriteria,
+  ): IQuery<string, ISqlWhereCriteria, ISqlOrderByCriteria> {
     this.currentFiltersGroup.push(c);
     return this;
   }
 
-  public addSortCriteria(c: ISqlOrderByCriteria): IQuery<string, ISqlWhereCriteria, ISqlOrderByCriteria> {
+  public addSortCriteria(
+    c: ISqlOrderByCriteria,
+  ): IQuery<string, ISqlWhereCriteria, ISqlOrderByCriteria> {
     this.sortGroup.push(c);
     return this;
   }
 
-  public beginNewFilterGroup(): IQuery<string, ISqlWhereCriteria, ISqlOrderByCriteria> {
+  public beginNewFilterGroup(): IQuery<
+    string,
+    ISqlWhereCriteria,
+    ISqlOrderByCriteria
+  > {
     if (this.currentFiltersGroup.length > 0) {
       this.fitlerGroups.push(this.currentFiltersGroup);
       this.currentFiltersGroup = [];
@@ -59,7 +71,9 @@ export class SqlSelectQuery implements ISqlSelectQuery {
     if (this.sortGroup.length === 1) {
       orderByClause = `ORDER BY ${this.sortGroup[0].toExpression()}`;
     } else if (this.sortGroup.length > 0) {
-      orderByClause = `ORDER BY ${this.sortGroup.map(s => s.toExpression()).join(',')}`;
+      orderByClause = `ORDER BY ${this.sortGroup
+        .map(s => s.toExpression())
+        .join(',')}`;
     }
 
     // compose the sql query.
