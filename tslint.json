@@ -4,11 +4,20 @@
   "jsRules": {},
   "rules": {
     "no-console": false,
-    "object-literal-sort-keys": false,
-    "variable-name": [true, "allow-leading-underscore"],
+    "object-literal-sort-keys": [true, "match-declaration-order"],
+    "variable-name": [true, "allow-leading-underscore", "allow-snake-case"],
     "quotemark": [true, "single"],
     "max-line-length": [true, 160],
-    "max-classes-per-file": [true, 10]
+    "max-classes-per-file": [true, 10],
+    "no-string-throw": true,
+    "no-var-keyword": true,
+    "prefer-object-spread": true,
+    "interface-over-type-literal": true,
+    "no-empty-interface": false,
+    "prefer-template": true,
+    "align": [true, "parameters", "statements", "elements"],
+    "arrow-parens": [true, "ban-single-arg-parens"],
+    "whitespace": true
   },
   "rulesDirectory": []
 }

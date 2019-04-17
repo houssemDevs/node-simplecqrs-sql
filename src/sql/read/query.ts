@@ -52,18 +52,18 @@ export class SqlSelectQuery implements ISqlSelectQuery {
 
     // build where clause.
     this.beginNewFilterGroup();
-    this.fitlerGroups.forEach((fg) => {
+    this.fitlerGroups.forEach(fg => {
       if (whereClause.length === 0) {
-        whereClause += `WHERE (${fg.map((c) => c.toExpression()).join(' AND ')})`;
+        whereClause += `WHERE (${fg.map(c => c.toExpression()).join(' AND ')})`;
       } else {
-        whereClause += ` OR (${fg.map((c) => c.toExpression()).join(' AND ')})`;
+        whereClause += ` OR (${fg.map(c => c.toExpression()).join(' AND ')})`;
       }
     });
 
     // build orderby clause.
     if (this.sortGroup.length > 0) {
       orderByClause = `ORDER BY ${this.sortGroup
-        .map((s) => s.toExpression())
+        .map(s => s.toExpression())
         .join(',')}`;
     }
 
