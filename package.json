@@ -11,6 +11,7 @@
     "build": "npx tsc",
     "dev": "npx tsc --watch",
     "clean": "npx rimraf ./lib",
+    "format": "npx prettier-tslint fix ./src/**/*.ts",
     "preversion": "npm run build && npm t",
     "postversion": "git push && git push --tags"
   },
@@ -31,7 +32,9 @@
   "directories": {
     "lib": "lib"
   },
-  "dependencies": {},
+  "dependencies": {
+    "node-simplecqrs": "^0.3.4"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/houssemdevs/bpnodepkg.git"
