@@ -1,7 +1,9 @@
 import { IFilterCriteria, ISortCriteria } from 'node-simplecqrs';
 
 /* #region  sql where criteria */
-export interface ISqlWhereCriteria extends IFilterCriteria<string> {}
+export interface ISqlWhereCriteria extends IFilterCriteria {
+  toExpression(): string;
+}
 
 export class SqlWhereCriteria implements ISqlWhereCriteria {
   public static custom(
@@ -46,7 +48,9 @@ export class SqlWhereCriteria implements ISqlWhereCriteria {
 /* #endregion */
 
 /* #region  sql orderby criteria */
-export interface ISqlOrderByCriteria extends ISortCriteria<string> {}
+export interface ISqlOrderByCriteria extends ISortCriteria {
+  toExpression(): string;
+}
 
 export class SqlOrderByCriteria implements ISqlOrderByCriteria {
   public static asc(field: string): SqlOrderByCriteria {

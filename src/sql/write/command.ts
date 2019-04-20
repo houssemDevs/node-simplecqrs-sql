@@ -1,7 +1,9 @@
 import { ICommand } from 'node-simplecqrs';
 import { ISqlWhereCriteria } from '../read/criteria';
 
-export interface ISqlCommand extends ICommand<string> {}
+export interface ISqlCommand extends ICommand {
+  toExpression(): string;
+}
 
 export interface ISqlUpdateCommand extends ISqlCommand {
   where(c: ISqlWhereCriteria): ISqlUpdateCommand;

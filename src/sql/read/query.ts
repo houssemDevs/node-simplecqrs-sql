@@ -1,55 +1,61 @@
-import { IQuery } from 'node-simplecqrs';
+import { IQuery, query } from 'node-simplecqrs';
 
 import { ISqlOrderByCriteria, ISqlWhereCriteria } from './criteria';
 
-export interface ISqlSelectQuery
-  extends IQuery<string, ISqlWhereCriteria, ISqlOrderByCriteria> {}
+export interface ISqlQuery extends IQuery {
+  where(fc: ISqlWhereCriteria): ISqlQuery;
+  or(): ISqlQuery;
+  orderBy(sc: ISqlOrderByCriteria): ISqlQuery;
+  toExpression(): string;
+}
 
-export class SqlSelectQuery implements ISqlSelectQuery {
-  public static fromSelectStatment(statment: string): SqlSelectQuery {
-    return new SqlSelectQuery(statment);
+@query
+export class SqlQuery implements ISqlQuery {
+  public static fromSelectStatment(statment: string): ISqlQuery {
+    return new SqlQuery(statment);
   }
 
   public static fromTableAndColumns(
     table: string,
     columns: string[],
-  ): SqlSelectQuery {
-    return new SqlSelectQuery(`SELECT ${columns.join(',')} FROM ${table}`);
-  }
-
-  private fitlerGroups: ISqlWhereCriteria[][];
-  private currentFiltersGroup: ISqlWhereCriteria[];
-  private sortGroup: ISqlOrderByCriteria[];
-
-  protected constructor(private root: string) {
-    this.fitlerGroups = [];
-    this.sortGroup = [];
-    this.currentFiltersGroup = [];
-  }
-
-  public addFilterCriteria(
-    c: ISqlWhereCriteria,
-  ): IQuery<string, ISqlWhereCriteria, ISqlOrderByCriteria> {
-    this.currentFiltersGroup.push(c);
-    return this;
-  }
-
-  public addSortCriteria(
-    c: ISqlOrderByCriteria,
-  ): IQuery<string, ISqlWhereCriteria, ISqlOrderByCriteria> {
-    this.sortGroup.push(c);
-    return this;
-  }
-
-  public beginNewFilterGroup(): IQuery<
-    string,
-    ISqlWhereCriteria,
-    ISqlOrderByCriteria
-  > {
-    if (this.currentFiltersGroup.length > 0) {
-      this.fitlerGroups.push(this.currentFiltersGroup);
-      this.currentFiltersGroup = [];
+  ): ISqlQuery {
+    let columnsString = '';
+    if (columns.length > 1) {
+      columnsString = columns.join(',');
+    } else if (columns.length === 1) {
+      columnsString = columns[0];
+    } else {
+      columnsString = '*';
     }
+    return new SqlQuery(`SELECT ${columnsString} FROM ${table}`);
+  }
+
+  protected whereFilterGroups: ISqlWhereCriteria[][];
+  protected currentWhereFilterGroup: ISqlWhereCriteria[];
+  protected orderByGroup: ISqlOrderByCriteria[];
+  protected root: string;
+  constructor(root: string) {
+    this.currentWhereFilterGroup = [];
+    this.orderByGroup = [];
+    this.whereFilterGroups = [];
+    this.root = root;
+  }
+
+  public where(fc: ISqlWhereCriteria): ISqlQuery {
+    this.currentWhereFilterGroup.push(fc);
+    return this;
+  }
+
+  public or(): ISqlQuery {
+    if (this.currentWhereFilterGroup.length > 0) {
+      this.whereFilterGroups.push(this.currentWhereFilterGroup);
+      this.currentWhereFilterGroup = [];
+    }
+    return this;
+  }
+
+  public orderBy(sc: ISqlOrderByCriteria): ISqlQuery {
+    this.orderByGroup.push(sc);
     return this;
   }
 
@@ -58,8 +64,8 @@ export class SqlSelectQuery implements ISqlSelectQuery {
     let orderByClause: string = '';
 
     // build where clause.
-    this.beginNewFilterGroup();
-    this.fitlerGroups.forEach(fg => {
+    this.or();
+    this.whereFilterGroups.forEach(fg => {
       if (whereClause.length === 0) {
         whereClause += `WHERE (${fg.map(c => c.toExpression()).join(' AND ')})`;
       } else {
@@ -68,10 +74,10 @@ export class SqlSelectQuery implements ISqlSelectQuery {
     });
 
     // build orderby clause.
-    if (this.sortGroup.length === 1) {
-      orderByClause = `ORDER BY ${this.sortGroup[0].toExpression()}`;
-    } else if (this.sortGroup.length > 0) {
-      orderByClause = `ORDER BY ${this.sortGroup
+    if (this.orderByGroup.length === 1) {
+      orderByClause = `ORDER BY ${this.orderByGroup[0].toExpression()}`;
+    } else if (this.orderByGroup.length > 0) {
+      orderByClause = `ORDER BY ${this.orderByGroup
         .map(s => s.toExpression())
         .join(',')}`;
     }

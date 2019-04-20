@@ -1,19 +1,19 @@
-import { IQueryHandler } from 'node-simplecqrs';
+import { IQueryHandler, queries } from 'node-simplecqrs';
 import { Readable } from 'stream';
 import { Request } from 'tedious';
 
-import { ISqlSelectQuery } from '../../sql/read/query';
+import { ISqlQuery, SqlQuery } from '../../sql/read/query';
 import { ITdsDataMapper, TdsDefaultDataMapper } from '../common/datamapper';
 import { TdsConnectionPool } from '../connectionpool';
 
-export class TdsQueryHandler<TEntity>
-  implements IQueryHandler<TEntity, ISqlSelectQuery> {
+@queries(SqlQuery)
+export class TdsQueryHandler<TEntity> implements IQueryHandler<TEntity> {
   constructor(
     private pool: TdsConnectionPool,
     private datamapper: ITdsDataMapper<TEntity>,
   ) {}
 
-  public get(query: ISqlSelectQuery): Promise<TEntity[]> {
+  public get(query: ISqlQuery): Promise<TEntity[]> {
     return new Promise(async (res, rej) => {
       try {
         const matches: TEntity[] = [];
@@ -33,7 +33,7 @@ export class TdsQueryHandler<TEntity>
     });
   }
 
-  public getStream(query: ISqlSelectQuery): Readable {
+  public getStream(query: ISqlQuery): Readable {
     const rs = new Readable({ objectMode: true });
     // tslint:disable-next-line: no-empty
     rs._read = () => {};
