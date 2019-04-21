@@ -1,4 +1,3 @@
-export { ISqlDataMapper } from './sql/common/datamapper';
 export {
   ISqlOrderByCriteria,
   ISqlWhereCriteria,
