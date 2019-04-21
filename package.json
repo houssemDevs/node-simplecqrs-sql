@@ -44,8 +44,12 @@
     "@types/generic-pool": "^3.1.9",
     "@types/tedious": "^3.0.0",
     "generic-pool": "^3.7.1",
+<<<<<<< HEAD
     "inversify": "^5.0.1",
     "node-simplecqrs": "^0.3.4",
+=======
+    "node-simplecqrs": "^0.4.5",
+>>>>>>> 2d1afc77a6345d8cb5a87d24c3564d2f4892978d
     "reflect-metadata": "^0.1.13",
     "tedious": "^6.1.1"
   },
