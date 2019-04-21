@@ -5,9 +5,7 @@ import { ISqlCommand } from '../../sql/command/command';
 import { TdsConnectionConfig } from '../../types';
 import { TdsConnectionPool } from '../connectionpool';
 
-export interface ITdsCommandHandler extends ICommandHandler {}
-
-export class TdsCommandHandler implements ITdsCommandHandler {
+export class TdsCommandHandler implements ICommandHandler {
   private pool: TdsConnectionPool;
   constructor(config: TdsConnectionConfig) {
     this.pool = new TdsConnectionPool(config);

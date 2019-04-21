@@ -6,7 +6,18 @@ export {
   SqlWhereCriteria,
 } from './sql/common/criteria';
 
+export { ISqlQuery, SqlQuery } from './sql/query/query';
+export {
+  ISqlCommand,
+  ISqlDeleteCommand,
+  ISqlInsertCommand,
+  ISqlUpdateCommand,
+  SqlCommand,
+  SqlUpdateCommand,
+} from './sql/command/command';
+
 export { TdsConnectionConfig } from './types';
+export { TdsConnectionPool } from './tedious/connectionpool';
 export {
   ITdsDataMapper,
   TdsDefaultDataMapper,
@@ -15,7 +26,4 @@ export {
   TdsGenericQueryHandler,
   TdsQueryHandler,
 } from './tedious/query/queryhandler';
-export { TdsConnectionPool } from './tedious/connectionpool';
-
-// TODO: implement IQueryHandler.
-// TODO: test SqlCriterias Where and Sort.
+export { TdsCommandHandler } from './tedious/command/commandhandler';
