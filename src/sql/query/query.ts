@@ -1,6 +1,6 @@
-import { IQuery, query } from 'node-simplecqrs';
+import { IQuery } from 'node-simplecqrs';
 
-import { ISqlOrderByCriteria, ISqlWhereCriteria } from './criteria';
+import { ISqlOrderByCriteria, ISqlWhereCriteria } from '../common/criteria';
 
 export interface ISqlQuery extends IQuery {
   where(fc: ISqlWhereCriteria): ISqlQuery;
@@ -9,7 +9,6 @@ export interface ISqlQuery extends IQuery {
   toExpression(): string;
 }
 
-@query
 export class SqlQuery implements ISqlQuery {
   public static fromSelectStatment(statment: string): ISqlQuery {
     return new SqlQuery(statment);

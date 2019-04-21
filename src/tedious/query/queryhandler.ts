@@ -1,17 +1,22 @@
-import { IQueryHandler, queries } from 'node-simplecqrs';
+import { IQueryHandler } from 'node-simplecqrs';
 import { Readable } from 'stream';
 import { Request } from 'tedious';
 
-import { ISqlQuery, SqlQuery } from '../../sql/read/query';
+import { ISqlQuery } from '../../sql/query/query';
+import { TdsConnectionConfig } from '../../types';
 import { ITdsDataMapper, TdsDefaultDataMapper } from '../common/datamapper';
 import { TdsConnectionPool } from '../connectionpool';
 
-@queries(SqlQuery)
 export class TdsQueryHandler<TEntity> implements IQueryHandler<TEntity> {
+  private pool: TdsConnectionPool;
+  private dataMapper: ITdsDataMapper<TEntity>;
   constructor(
-    private pool: TdsConnectionPool,
-    private datamapper: ITdsDataMapper<TEntity>,
-  ) {}
+    config: TdsConnectionConfig,
+    datamapper: ITdsDataMapper<TEntity>,
+  ) {
+    this.pool = new TdsConnectionPool(config);
+    this.dataMapper = datamapper;
+  }
 
   public get(query: ISqlQuery): Promise<TEntity[]> {
     return new Promise(async (res, rej) => {
@@ -23,8 +28,9 @@ export class TdsQueryHandler<TEntity> implements IQueryHandler<TEntity> {
             throw err;
           }
           res(matches);
+          this.pool.release(connection);
         });
-        request.on('row', row => matches.push(this.datamapper.toDomain(row)));
+        request.on('row', row => matches.push(this.dataMapper.toDomain(row)));
         connection.execSql(request);
       } catch (err) {
         console.log(err.message);
@@ -45,7 +51,7 @@ export class TdsQueryHandler<TEntity> implements IQueryHandler<TEntity> {
         rs.push(null);
         this.pool.release(connection);
       });
-      request.on('row', row => rs.push(this.datamapper.toDomain(row)));
+      request.on('row', row => rs.push(this.dataMapper.toDomain(row)));
       request.on('error', err => console.log(err.message));
       connection.execSql(request);
     });
@@ -55,7 +61,7 @@ export class TdsQueryHandler<TEntity> implements IQueryHandler<TEntity> {
 }
 
 export class TdsGenericQueryHandler extends TdsQueryHandler<{}> {
-  constructor(pool: TdsConnectionPool) {
-    super(pool, new TdsDefaultDataMapper());
+  constructor(config: TdsConnectionConfig) {
+    super(config, new TdsDefaultDataMapper());
   }
 }

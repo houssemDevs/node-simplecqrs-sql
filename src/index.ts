@@ -4,7 +4,7 @@ export {
   ISqlWhereCriteria,
   SqlOrderByCriteria,
   SqlWhereCriteria,
-} from './sql/read/criteria';
+} from './sql/common/criteria';
 
 export { TdsConnectionConfig } from './types';
 export {
@@ -14,7 +14,7 @@ export {
 export {
   TdsGenericQueryHandler,
   TdsQueryHandler,
-} from './tedious/read/queryhandler';
+} from './tedious/query/queryhandler';
 export { TdsConnectionPool } from './tedious/connectionpool';
 
 // TODO: implement IQueryHandler.

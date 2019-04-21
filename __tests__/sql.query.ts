@@ -1,17 +1,30 @@
 import 'reflect-metadata';
 
-import { SqlOrderByCriteria, SqlWhereCriteria } from '../src/sql/read/criteria';
-import { ISqlQuery, SqlQuery } from '../src/sql/read/query';
+import {
+  SqlOrderByCriteria,
+  SqlWhereCriteria,
+} from '../src/sql/common/criteria';
+import { ISqlQuery, SqlQuery } from '../src/sql/query/query';
 
 describe('SqlSelectQuery', () => {
   describe('queries without criterias', () => {
     test('build a correct query from table and columns', () => {
-      const query = SqlQuery.fromTableAndColumns('users', ['code', 'firstname', 'lastname']);
-      expect(query.toExpression()).toMatch(/SELECT code,firstname,lastname FROM users\s*;/);
+      const query = SqlQuery.fromTableAndColumns('users', [
+        'code',
+        'firstname',
+        'lastname',
+      ]);
+      expect(query.toExpression()).toMatch(
+        /SELECT code,firstname,lastname FROM users\s*;/,
+      );
     });
     test('build a correct query from select statement', () => {
-      const query = SqlQuery.fromSelectStatment('select code,firstname,lastname from users');
-      expect(query.toExpression()).toMatch(/select code,firstname,lastname from users\s*;/);
+      const query = SqlQuery.fromSelectStatment(
+        'select code,firstname,lastname from users',
+      );
+      expect(query.toExpression()).toMatch(
+        /select code,firstname,lastname from users\s*;/,
+      );
     });
   });
   describe('queries with criterias', () => {
@@ -22,21 +35,29 @@ describe('SqlSelectQuery', () => {
     test('build a correct query with filters', () => {
       query.where(SqlWhereCriteria.eq('code', '12345'));
 
-      expect(query.toExpression()).toMatch(/^select code from users WHERE \(code = 12345\) ;$/);
+      expect(query.toExpression()).toMatch(
+        /^select code from users WHERE \(code = 12345\) ;$/,
+      );
 
       query.or().where(SqlWhereCriteria.eq('code', '345678'));
 
-      expect(query.toExpression()).toMatch(/^select code from users WHERE \(code = 12345\) OR \(code = 345678\) ;$/);
+      expect(query.toExpression()).toMatch(
+        /^select code from users WHERE \(code = 12345\) OR \(code = 345678\) ;$/,
+      );
     });
 
     test('build correct query with sorts', () => {
       query.orderBy(SqlOrderByCriteria.asc('code'));
 
-      expect(query.toExpression()).toMatch(/^select code from users  ORDER BY code ASC;$/);
+      expect(query.toExpression()).toMatch(
+        /^select code from users  ORDER BY code ASC;$/,
+      );
 
       query.orderBy(SqlOrderByCriteria.desc('code'));
 
-      expect(query.toExpression()).toMatch(/^select code from users  ORDER BY code ASC,code DESC;$/);
+      expect(query.toExpression()).toMatch(
+        /^select code from users  ORDER BY code ASC,code DESC;$/,
+      );
     });
   });
 });
