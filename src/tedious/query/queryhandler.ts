@@ -4,7 +4,7 @@ import { Request } from 'tedious';
 
 import { ISqlQuery } from '../../sql/query/query';
 import { TdsConnectionConfig } from '../../types';
-import { ITdsDataMapper, TdsDefaultDataMapper } from '../common/datamapper';
+import { ITdsDataMapper, TdsGenericDataMapper } from '../common/datamapper';
 import { TdsConnectionPool } from '../connectionpool';
 
 export class TdsQueryHandler<TEntity> implements IQueryHandler<TEntity> {
@@ -52,7 +52,7 @@ export class TdsQueryHandler<TEntity> implements IQueryHandler<TEntity> {
         this.pool.release(connection);
       });
       request.on('row', row => rs.push(this.dataMapper.toDomain(row)));
-      request.on('error', err => console.log(err.message));
+      request.on('error', err => err);
       connection.execSql(request);
     });
 
@@ -62,6 +62,6 @@ export class TdsQueryHandler<TEntity> implements IQueryHandler<TEntity> {
 
 export class TdsGenericQueryHandler extends TdsQueryHandler<{}> {
   constructor(config: TdsConnectionConfig) {
-    super(config, new TdsDefaultDataMapper());
+    super(config, new TdsGenericDataMapper());
   }
 }

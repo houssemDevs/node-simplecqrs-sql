@@ -4,7 +4,7 @@
   "jsRules": {},
   "rules": {
     "no-console": false,
-    "object-literal-sort-keys": [true, "match-declaration-order"],
+    "object-literal-sort-keys": false,
     "variable-name": [true, "allow-leading-underscore", "allow-snake-case"],
     "quotemark": [true, "single"],
     "max-line-length": [true, 160],
