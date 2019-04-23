@@ -4,3 +4,5 @@ lib
 *-lock.json
 .vs
 .vscode
+lib.ex
+examples/**/*.js

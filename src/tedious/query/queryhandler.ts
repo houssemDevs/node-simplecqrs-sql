@@ -3,9 +3,9 @@ import { Readable } from 'stream';
 import { Request } from 'tedious';
 
 import { ISqlQuery } from '../../sql/query/query';
-import { TdsConnectionConfig } from '../../types';
 import { ITdsDataMapper, TdsGenericDataMapper } from '../common/datamapper';
 import { TdsConnectionPool } from '../connectionpool';
+import { TdsConnectionConfig } from '../types';
 
 export class TdsQueryHandler<TEntity> implements IQueryHandler<TEntity> {
   private pool: TdsConnectionPool;

@@ -2,8 +2,8 @@ import { ICommandHandler } from 'node-simplecqrs';
 
 import { Request } from 'tedious';
 import { ISqlCommand } from '../../sql/command/command';
-import { TdsConnectionConfig } from '../../types';
 import { TdsConnectionPool } from '../connectionpool';
+import { TdsConnectionConfig } from '../types';
 
 export class TdsCommandHandler implements ICommandHandler {
   private pool: TdsConnectionPool;

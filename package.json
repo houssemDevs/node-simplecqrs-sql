@@ -9,6 +9,7 @@
     "cov": "npx jest --coverage",
     "prebuild": "npm run clean",
     "build": "npx tsc",
+    "predev": "npm run clean",
     "dev": "npx tsc --watch",
     "clean": "npx rimraf ./lib",
     "format": "npx prettier-tslint fix ./src/**/*.ts",
@@ -44,7 +45,7 @@
     "@types/tedious": "^3.0.0",
     "generic-pool": "^3.7.1",
     "inversify": "^5.0.1",
-    "node-simplecqrs": "^0.5.3",
+    "node-simplecqrs": "^0.5.4",
     "reflect-metadata": "^0.1.13",
     "tedious": "^6.1.1"
   },

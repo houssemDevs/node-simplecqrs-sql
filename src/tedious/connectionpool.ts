@@ -1,7 +1,8 @@
 import { createPool, Factory, Options, Pool } from 'generic-pool';
 import { Connection, Request } from 'tedious';
 
-import { IConnectionPool, TdsConnectionConfig } from '../types';
+import { IConnectionPool } from '../types';
+import { TdsConnectionConfig } from './types';
 
 class TdsConnectionFactory implements Factory<Connection> {
   constructor(private config: TdsConnectionConfig) {

@@ -29,10 +29,10 @@ export class SqlQuery implements ISqlQuery {
     return new SqlQuery(`SELECT ${columnsString} FROM ${table}`);
   }
 
-  protected whereFilterGroups: ISqlWhereCriteria[][];
-  protected currentWhereFilterGroup: ISqlWhereCriteria[];
-  protected orderByGroup: ISqlOrderByCriteria[];
-  protected root: string;
+  private whereFilterGroups: ISqlWhereCriteria[][];
+  private currentWhereFilterGroup: ISqlWhereCriteria[];
+  private orderByGroup: ISqlOrderByCriteria[];
+  private root: string;
   constructor(root: string) {
     this.currentWhereFilterGroup = [];
     this.orderByGroup = [];

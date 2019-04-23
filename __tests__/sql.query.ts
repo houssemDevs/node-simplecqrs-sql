@@ -1,10 +1,11 @@
 import 'reflect-metadata';
 
 import {
+  ISqlQuery,
   SqlOrderByCriteria,
+  SqlQuery,
   SqlWhereCriteria,
-} from '../src/sql/common/criteria';
-import { ISqlQuery, SqlQuery } from '../src/sql/query/query';
+} from '../src/sql';
 
 describe('SqlSelectQuery', () => {
   describe('queries without criterias', () => {
