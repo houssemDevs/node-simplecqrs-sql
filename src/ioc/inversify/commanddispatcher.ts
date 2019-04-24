@@ -1,4 +1,3 @@
 import { Ioc } from 'node-simplecqrs';
 
-export class InversifySqlCommandDispatcher extends Ioc.Inversify
-  .InvesrifyCommandDispatcher {}
+export class InversifySqlCommandDispatcher extends Ioc.Inversify.InvesrifyCommandDispatcher {}

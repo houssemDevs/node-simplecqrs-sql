@@ -6,6 +6,4 @@ export interface IConnectionPool<TConnection> {
   terminate(): void;
 }
 
-export type IConnectionPoolTask<TConnection> = (
-  connection: TConnection,
-) => Promise<any>;
+export type IConnectionPoolTask<TConnection> = (connection: TConnection) => Promise<any>;

@@ -9,12 +9,10 @@ import { TYPES } from '../constants';
 decorate(injectable(), TdsQueryHandler);
 
 @Ioc.queries(IocSqlQuery)
-export class InversifyTdsQueryHandler<TEntity> extends TdsQueryHandler<
-  TEntity
-> {
+export class InversifyTdsQueryHandler<TEntity> extends TdsQueryHandler<TEntity> {
   constructor(
     @inject(TYPES.connectionConfig) config: TdsConnectionConfig,
-    @inject(TYPES.dataMapper) mapper: ITdsDataMapper<TEntity>,
+    @inject(TYPES.dataMapper) mapper: ITdsDataMapper<TEntity>
   ) {
     super(config, mapper);
   }

@@ -7,11 +7,7 @@ export interface ISqlCriteria {
 export interface ISqlWhereCriteria extends ISqlCriteria {}
 
 export class SqlWhereCriteria implements ISqlWhereCriteria {
-  public static custom(
-    field: string,
-    value: string,
-    operator: string,
-  ): SqlWhereCriteria {
+  public static custom(field: string, value: string, operator: string): SqlWhereCriteria {
     return new SqlWhereCriteria(`${field} ${operator} ${value}`);
   }
   public static eq(field: string, value: string): SqlWhereCriteria {

@@ -53,10 +53,7 @@ const defaultPoolOpts: Options = {
 
 export class TdsConnectionPool implements IConnectionPool<Connection> {
   private pool: Pool<Connection>;
-  constructor(
-    private config: TdsConnectionConfig,
-    opts: Options = defaultPoolOpts,
-  ) {
+  constructor(private config: TdsConnectionConfig, opts: Options = defaultPoolOpts) {
     this.pool = createPool(new TdsConnectionFactory(config), opts);
   }
   public use(task: IConnectionPoolTask<Connection>): Promise<any> {

@@ -14,10 +14,7 @@ export class SqlQuery implements ISqlQuery {
     return new SqlQuery(statment);
   }
 
-  public static fromTableAndColumns(
-    table: string,
-    columns: string[],
-  ): ISqlQuery {
+  public static fromTableAndColumns(table: string, columns: string[]): ISqlQuery {
     let columnsString = '';
     if (columns.length > 1) {
       columnsString = columns.join(',');
@@ -76,9 +73,7 @@ export class SqlQuery implements ISqlQuery {
     if (this.orderByGroup.length === 1) {
       orderByClause = `ORDER BY ${this.orderByGroup[0].toExpression()}`;
     } else if (this.orderByGroup.length > 0) {
-      orderByClause = `ORDER BY ${this.orderByGroup
-        .map(s => s.toExpression())
-        .join(',')}`;
+      orderByClause = `ORDER BY ${this.orderByGroup.map(s => s.toExpression()).join(',')}`;
     }
 
     // compose the sql query.

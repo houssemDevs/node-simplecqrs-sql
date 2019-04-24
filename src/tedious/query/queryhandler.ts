@@ -11,10 +11,7 @@ import { TdsConnectionConfig } from '../types';
 export class TdsQueryHandler<TEntity> implements IQueryHandler<TEntity> {
   private pool: TdsConnectionPool;
   private dataMapper: ITdsDataMapper<TEntity>;
-  constructor(
-    config: TdsConnectionConfig,
-    datamapper: ITdsDataMapper<TEntity>,
-  ) {
+  constructor(config: TdsConnectionConfig, datamapper: ITdsDataMapper<TEntity>) {
     this.pool = new TdsConnectionPool(config);
     this.dataMapper = datamapper;
   }
@@ -48,10 +45,7 @@ export class TdsQueryHandler<TEntity> implements IQueryHandler<TEntity> {
       });
   }
 
-  private _getStream(
-    sqlQuery: string,
-    rs: Readable,
-  ): IConnectionPoolTask<Connection> {
+  private _getStream(sqlQuery: string, rs: Readable): IConnectionPoolTask<Connection> {
     return (connection: Connection): Promise<void> =>
       new Promise((res, rej) => {
         const request = new Request(sqlQuery, err => {

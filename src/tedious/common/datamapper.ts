@@ -1,8 +1,7 @@
 import { IDateMapper } from 'node-simplecqrs';
 import { ColumnValue } from 'tedious';
 
-export interface ITdsDataMapper<TDomainEntity>
-  extends IDateMapper<ColumnValue[], TDomainEntity> {}
+export interface ITdsDataMapper<TDomainEntity> extends IDateMapper<ColumnValue[], TDomainEntity> {}
 
 export class TdsGenericDataMapper implements ITdsDataMapper<{}> {
   public toDomain(s: ColumnValue[]): {} {
