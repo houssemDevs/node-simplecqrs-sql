@@ -1,7 +1,8 @@
 import { ICommandHandler } from 'node-simplecqrs';
 
-import { Request } from 'tedious';
+import { Connection, Request } from 'tedious';
 import { ISqlCommand } from '../../sql/command/command';
+import { IConnectionPoolTask } from '../../types';
 import { TdsConnectionPool } from '../connectionpool';
 import { TdsConnectionConfig } from '../types';
 
@@ -12,20 +13,20 @@ export class TdsCommandHandler implements ICommandHandler {
   }
 
   public exec(c: ISqlCommand): Promise<boolean> {
-    return new Promise<boolean>(async (res, rej) => {
-      try {
-        const connection = await this.pool.acquire();
-        const request = new Request(c.toExpression(), err => {
+    return this.pool.use(this._exec(c.toExpression()));
+  }
+
+  private _exec(sqlQuery: string): IConnectionPoolTask<Connection> {
+    return (connection: Connection): Promise<boolean> =>
+      new Promise((res, rej) => {
+        const request = new Request(sqlQuery, err => {
           if (err) {
             rej(err);
           }
           res(true);
         });
-        request.on('error', err => rej(err));
+        request.on('error', err => err);
         connection.execSql(request);
-      } catch (err) {
-        rej(err);
-      }
-    });
+      });
   }
 }

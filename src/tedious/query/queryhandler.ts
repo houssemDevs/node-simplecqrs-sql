@@ -1,8 +1,9 @@
 import { IQueryHandler } from 'node-simplecqrs';
 import { Readable } from 'stream';
-import { Request } from 'tedious';
+import { Connection, Request } from 'tedious';
 
 import { ISqlQuery } from '../../sql/query/query';
+import { IConnectionPoolTask } from '../../types';
 import { ITdsDataMapper, TdsGenericDataMapper } from '../common/datamapper';
 import { TdsConnectionPool } from '../connectionpool';
 import { TdsConnectionConfig } from '../types';
@@ -19,44 +20,51 @@ export class TdsQueryHandler<TEntity> implements IQueryHandler<TEntity> {
   }
 
   public get(query: ISqlQuery): Promise<TEntity[]> {
-    return new Promise(async (res, rej) => {
-      try {
-        const matches: TEntity[] = [];
-        const connection = await this.pool.acquire();
-        const request = new Request(query.toExpression(), err => {
-          if (err) {
-            throw err;
-          }
-          res(matches);
-          this.pool.release(connection);
-        });
-        request.on('row', row => matches.push(this.dataMapper.toDomain(row)));
-        connection.execSql(request);
-      } catch (err) {
-        console.log(err.message);
-        res([]);
-      }
-    });
+    return this.pool.use(this._get(query.toExpression()));
   }
 
   public getStream(query: ISqlQuery): Readable {
     const rs = new Readable({ objectMode: true });
-    // tslint:disable-next-line: no-empty
-    rs._read = () => {};
-    this.pool.acquire().then(connection => {
-      const request = new Request(query.toExpression(), err => {
-        if (err) {
-          console.log(err.message);
-        }
-        rs.push(null);
-        this.pool.release(connection);
-      });
-      request.on('row', row => rs.push(this.dataMapper.toDomain(row)));
-      request.on('error', err => err);
-      connection.execSql(request);
-    });
+
+    this.pool.use(this._getStream(query.toExpression(), rs));
 
     return rs;
+  }
+
+  private _get(sqlQuery: string): IConnectionPoolTask<Connection> {
+    return (connection: Connection): Promise<TEntity[]> =>
+      new Promise((res, rej) => {
+        const matches: TEntity[] = [];
+        const request = new Request(sqlQuery, err => {
+          if (err) {
+            console.log(err);
+            res([]);
+          }
+          res(matches);
+        });
+        request.on('row', row => matches.push(this.dataMapper.toDomain(row)));
+        request.on('error', err => err);
+        connection.execSql(request);
+      });
+  }
+
+  private _getStream(
+    sqlQuery: string,
+    rs: Readable,
+  ): IConnectionPoolTask<Connection> {
+    return (connection: Connection): Promise<void> =>
+      new Promise((res, rej) => {
+        const request = new Request(sqlQuery, err => {
+          if (err) {
+            console.log(err);
+          }
+          rs.push(null);
+          res();
+        });
+        request.on('row', row => rs.push(this.dataMapper.toDomain(row)));
+        request.on('error', err => err);
+        connection.execSql(request);
+      });
   }
 }
 

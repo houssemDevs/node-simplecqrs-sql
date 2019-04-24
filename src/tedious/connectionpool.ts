@@ -1,7 +1,7 @@
 import { createPool, Factory, Options, Pool } from 'generic-pool';
 import { Connection, Request } from 'tedious';
 
-import { IConnectionPool } from '../types';
+import { IConnectionPool, IConnectionPoolTask } from '../types';
 import { TdsConnectionConfig } from './types';
 
 class TdsConnectionFactory implements Factory<Connection> {
@@ -58,6 +58,9 @@ export class TdsConnectionPool implements IConnectionPool<Connection> {
     opts: Options = defaultPoolOpts,
   ) {
     this.pool = createPool(new TdsConnectionFactory(config), opts);
+  }
+  public use(task: IConnectionPoolTask<Connection>): Promise<any> {
+    return Promise.resolve(this.pool.use(task));
   }
 
   public acquire(): Promise<Connection> {
