@@ -1,39 +1,41 @@
 import 'reflect-metadata';
 
 import { Container, decorate } from 'inversify';
-import { IoC, SqlQuery, Tds } from '../src';
+import { IQueryHandler } from 'node-simplecqrs';
+import { Readable } from 'stream';
+import { Ioc, ISqlQuery, Tds } from '../src';
+import { IocSqlQuery } from '../src/ioc';
 
-const config: Tds.TdsConnectionConfig = {
-  server: 'localhost',
-  authentication: {
-    options: {
-      userName: 'sa',
-      password: '1.0.5.1dre2015',
-    },
-  },
-  options: {
-    database: 'RCTC_CONSOLID_DRE',
-  },
-};
+class MockQueryHandler implements IQueryHandler<{}> {
+  public get(q: ISqlQuery): Promise<Array<{}>> {
+    return Promise.resolve([{ i: 1 }, { i: 2 }]);
+  }
+  public getStream(q: ISqlQuery): Readable {
+    const rs = new Readable({ objectMode: true });
+    let data = [{ i: 1 }, { i: 2 }];
+    rs._read = () => {
+      rs.push(data[0]);
+      data = data.filter(v => v.i === 2);
+    };
+    return rs;
+  }
+}
+
+decorate(Ioc.queries(IocSqlQuery), MockQueryHandler);
 
 describe('dont know what to test', () => {
-  let container: Container;
-  beforeEach(() => {
-    container = new Container();
-    container
-      .bind(IoC.Inversify.TYPES.connectionConfig)
-      .toConstantValue(config);
-    container
-      .bind(IoC.Inversify.TYPES.dataMapper)
-      .toConstantValue(new Tds.TdsGenericDataMapper());
-  });
   it('should just work', async () => {
-    const query = IoC.IocSqlQuery.fromSelectStatment(
-      'select top 100 * from Taffaire',
+    const query = Ioc.IocSqlQuery.fromSelectStatment('select top 2 i from ist');
+    const dispatcher = new Ioc.Inversify.InversifySqlQueryDispatcher(
+      new Container(),
     );
-    expect(Reflect.getMetadataKeys(query.constructor)).toBeDefined();
-    const dispatcher = new IoC.Inversify.InversifySqlQueryDispatcher(container);
-    const result = await dispatcher.dispatch(query);
-    expect(result.length).toBeGreaterThan(1);
+    const array = await dispatcher.dispatch(query);
+    expect(array.length).toEqual(2);
+    expect(array[0]).toEqual({ i: 1 });
+    expect(array[1]).toEqual({ i: 2 });
+
+    const stream = dispatcher.dispatchStream(query);
+    expect(stream.read()).toEqual({ i: 1 });
+    expect(stream.read()).toEqual({ i: 2 });
   });
 });

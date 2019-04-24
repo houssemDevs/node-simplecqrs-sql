@@ -1,5 +1,3 @@
-import 'reflect-metadata';
-
 import {
   ISqlQuery,
   SqlOrderByCriteria,
@@ -7,7 +5,7 @@ import {
   SqlWhereCriteria,
 } from '../src/sql';
 
-describe('SqlSelectQuery', () => {
+describe('SqlQuery', () => {
   describe('queries without criterias', () => {
     test('build a correct query from table and columns', () => {
       const query = SqlQuery.fromTableAndColumns('users', [
@@ -33,7 +31,7 @@ describe('SqlSelectQuery', () => {
     beforeEach(() => {
       query = SqlQuery.fromSelectStatment('select code from users');
     });
-    test('build a correct query with filters', () => {
+    it('should build a correct query with filters', () => {
       query.where(SqlWhereCriteria.eq('code', '12345'));
 
       expect(query.toExpression()).toMatch(
@@ -47,7 +45,7 @@ describe('SqlSelectQuery', () => {
       );
     });
 
-    test('build correct query with sorts', () => {
+    it('shoult build correct query with sorts', () => {
       query.orderBy(SqlOrderByCriteria.asc('code'));
 
       expect(query.toExpression()).toMatch(
