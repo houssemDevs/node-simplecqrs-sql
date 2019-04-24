@@ -2,7 +2,9 @@ import * as Inversify from './inversify';
 
 export { Inversify };
 
-export { queries, query, command, commands } from 'node-simplecqrs';
+import { Ioc } from 'node-simplecqrs';
+const { command, commands, queries, query } = Ioc;
+export { queries, query, command, commands };
 
 export { IocSqlUpdateCommand } from './command';
 

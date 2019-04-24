@@ -1,7 +1,7 @@
-import { query } from 'node-simplecqrs';
+import { Ioc } from 'node-simplecqrs';
 import { SqlQuery } from '../sql';
 
-@query
+@Ioc.query
 export class IocSqlQuery extends SqlQuery {
   public static fromSelectStatment(statement: string): IocSqlQuery {
     return new IocSqlQuery(statement);

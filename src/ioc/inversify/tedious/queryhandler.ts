@@ -1,5 +1,5 @@
 import { decorate, inject, injectable } from 'inversify';
-import { queries } from 'node-simplecqrs';
+import { Ioc } from 'node-simplecqrs';
 
 import { ITdsDataMapper, TdsConnectionConfig } from '../../../tedious';
 import { TdsQueryHandler } from '../../../tedious/query/queryhandler';
@@ -8,7 +8,7 @@ import { TYPES } from '../constants';
 
 decorate(injectable(), TdsQueryHandler);
 
-@queries(IocSqlQuery)
+@Ioc.queries(IocSqlQuery)
 export class InversifyTdsQueryHandler<TEntity> extends TdsQueryHandler<
   TEntity
 > {
