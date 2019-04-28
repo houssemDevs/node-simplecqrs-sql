@@ -1,4 +1,4 @@
 export const TYPES = {
-  connectionConfig: Symbol('ConnectionConfig'),
-  dataMapper: Symbol('DataMapper'),
+  CONNECTION_CONFIG: Symbol('ConnectionConfig'),
+  DATAMAPPER: Symbol('DataMapper'),
 };
