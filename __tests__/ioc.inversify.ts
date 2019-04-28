@@ -3,8 +3,7 @@ import 'reflect-metadata';
 import { Container, decorate } from 'inversify';
 import { IQueryHandler } from 'node-simplecqrs';
 import { Readable } from 'stream';
-import { Ioc, ISqlQuery, Tds } from '../src';
-import { IocSqlQuery } from '../src/ioc';
+import { Ioc, ISqlQuery, SqlQuery, Tds } from '../src';
 
 class MockQueryHandler implements IQueryHandler<{}> {
   public get(q: ISqlQuery): Promise<Array<{}>> {
@@ -21,14 +20,12 @@ class MockQueryHandler implements IQueryHandler<{}> {
   }
 }
 
-decorate(Ioc.queries(IocSqlQuery), MockQueryHandler);
+decorate(Ioc.queries(SqlQuery), MockQueryHandler);
 
 describe('dont know what to test', () => {
   it('should just work', async () => {
-    const query = Ioc.IocSqlQuery.fromSelectStatment('select top 2 i from ist');
-    const dispatcher = new Ioc.Inversify.InversifySqlQueryDispatcher(
-      new Container(),
-    );
+    const query = SqlQuery.fromSelectStatment('select top 2 i from ist');
+    const dispatcher = new Ioc.Inversify.InversifySqlQueryDispatcher(new Container());
     const array = await dispatcher.dispatch(query);
     expect(array.length).toEqual(2);
     expect(array[0]).toEqual({ i: 1 });
