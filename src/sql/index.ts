@@ -1,6 +1,6 @@
 export { ISqlCommand, SqlCommand } from './command/command';
-export { ISqlDeleteCommand } from './command/delete';
-export { ISqlInsertCommand } from './command/insert';
+export { ISqlDeleteCommand, SqlDeleteCommand } from './command/delete';
+export { ISqlInsertCommand, SqlInsertCommand } from './command/insert';
 export { ISqlUpdateCommand, SqlUpdateCommand } from './command/update';
 
 export {
