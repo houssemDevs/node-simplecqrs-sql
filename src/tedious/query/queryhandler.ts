@@ -23,6 +23,8 @@ export class TdsQueryHandler<TEntity> implements IQueryHandler<TEntity> {
   public getStream(query: ISqlQuery): Readable {
     const rs = new Readable({ objectMode: true });
 
+    rs._read = (size: number) => ({});
+
     this.pool.use(this._getStream(query.toExpression(), rs));
 
     return rs;
