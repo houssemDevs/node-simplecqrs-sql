@@ -1,12 +1,6 @@
 import { Ioc } from 'node-simplecqrs';
-import { SqlUpdateCommand } from '../sql';
+import { SqlDeleteCommand, SqlInsertCommand, SqlUpdateCommand } from '../sql';
 
-@Ioc.command
-export class IocSqlUpdateCommand extends SqlUpdateCommand {
-  public static fromTable(table: string): IocSqlUpdateCommand {
-    return new IocSqlUpdateCommand(`UPDATE ${table}`);
-  }
-  constructor(exp: string) {
-    super(exp);
-  }
-}
+Reflect.decorate([Ioc.command], SqlUpdateCommand);
+Reflect.decorate([Ioc.command], SqlDeleteCommand);
+Reflect.decorate([Ioc.command], SqlInsertCommand);
